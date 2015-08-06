@@ -41,8 +41,6 @@ You should implement CancellableCollectionOperations.cancellableRecursiveQuickSo
 
 Update the Quicksort implementation so that it regularly checks whether the android.os.AsyncTask has been cancelled.
 
-Obviously, you will need to change which sorting method is called in doInBackground(). Just don’t change the Comparator.
-
 When you’re done, run the application. Click Sort. Click Cancel. You should be able to click on Sort again very quickly, without having to wait several seconds for the Button to be visible again.
 
 If sorting is cancelled, the ListView can display the items without any order.
