@@ -11,3 +11,8 @@ local.properties
 proguard/
 *.log
 .DS_Store
+.idea/
+*.iml
+gradle/
+gradlew
+*.bat
