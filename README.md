@@ -3,9 +3,7 @@ Cancellable Collection sorting for Android AsyncTask
 
 Intro:
 
-In Android Studio 1.3, import the project.
-
-It may ask to download the Gradle wrapper, which you should probably do.
+In Android Studio, import the project.
 
 Run the application in an Android emulator or on an Android device.
 
