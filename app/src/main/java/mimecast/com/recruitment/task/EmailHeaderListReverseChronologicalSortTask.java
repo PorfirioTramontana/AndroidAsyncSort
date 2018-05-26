@@ -1,18 +1,25 @@
 package mimecast.com.recruitment.task;
 
 import android.os.AsyncTask;
-
-import mimecast.com.recruitment.model.EmailHeaderModel;
-import mimecast.com.recruitment.utils.CancellableCollectionOperations;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+
+import mimecast.com.recruitment.model.EmailHeaderModel;
+import mimecast.com.recruitment.utils.CancellableCollectionOperations;
 
 /**
  * Created by Michael Aubert on 27/02/2015.
  */
 
 public class EmailHeaderListReverseChronologicalSortTask extends AsyncTask<Void, Void, Void> {
+    //ADDED
+    public static Semaphore task_EmailHeaderListReverseChronologicalSort_Finish;
+    public static Semaphore task_EmailHeaderListReverseChronologicalSort_Start;
+    //END ADDED
 
     public interface EmailHeaderListSortListener {
         void onEmailHeaderListSorted(ArrayList<EmailHeaderModel> anEmailHeaderList);
@@ -28,6 +35,17 @@ public class EmailHeaderListReverseChronologicalSortTask extends AsyncTask<Void,
 
     @Override
     protected Void doInBackground(Void... voids) {
+        //ADDED
+        if (task_EmailHeaderListReverseChronologicalSort_Start != null) {
+            try {
+                task_EmailHeaderListReverseChronologicalSort_Start.acquire();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            task_EmailHeaderListReverseChronologicalSort_Start.release();
+        }
+        //END ADDED
+
         if(null != iEmailHeaderList) {
             // the next line is the only one you should need to modify in this file
             CancellableCollectionOperations.recursiveQuickSort(iEmailHeaderList, new Comparator<EmailHeaderModel>() {
@@ -51,10 +69,37 @@ public class EmailHeaderListReverseChronologicalSortTask extends AsyncTask<Void,
                     } catch (InterruptedException iex) {
 
                     }
+                    //ADDED
+                    if (task_EmailHeaderListReverseChronologicalSort_Finish != null) {
+                        try {
+                            if (!task_EmailHeaderListReverseChronologicalSort_Finish.tryAcquire(15L, TimeUnit.SECONDS)) {
+                                Log.d("TEST", "TASK: TIMEOUT task i");
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("TEST", "TASK: End task i");
+                        task_EmailHeaderListReverseChronologicalSort_Finish.release();
+                    }
+                    //END ADDED
                     return result;
                 }
             });
         }
+
+        //ADDED
+        if (task_EmailHeaderListReverseChronologicalSort_Finish != null) {
+            try {
+                if (!task_EmailHeaderListReverseChronologicalSort_Finish.tryAcquire(15L, TimeUnit.SECONDS)) {
+                    Log.d("TEST", "TASK: TIMEOUT task i");
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Log.d("TEST", "TASK: End task i");
+            task_EmailHeaderListReverseChronologicalSort_Finish.release();
+        }
+        //END ADDED
         return null;
     }
 
