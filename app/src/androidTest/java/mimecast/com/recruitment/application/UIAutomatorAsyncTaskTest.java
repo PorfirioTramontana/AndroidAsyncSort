@@ -104,18 +104,16 @@ public class UIAutomatorAsyncTaskTest {
         Log.d("TEST", "TEST: Il test sblocca la terminazione del task download");
         DownloadEmailHeaderListTask.task_DownloadEmailHeaderList_Finish.release();
 
+
+        UiObject ui = mDevice.findObject(new UiSelector().text("Sort"));
+        ui.click();
+
+        Thread.sleep(2000);
         mDevice.pressHome();
         Thread.sleep(2000);
         mDevice.pressRecentApps();
         Thread.sleep(1000);
         mDevice.pressRecentApps();
-
-        Thread.sleep(1000);
-
-        UiObject ui = mDevice.findObject(new UiSelector().text("SORT"));
-        ui.click();
-
-
         Thread.sleep(2000);
     }
 
