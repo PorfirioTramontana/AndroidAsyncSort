@@ -119,6 +119,34 @@ public class GeneralEvent {
         mDevice.pressHome();
     }
 
+    public static void pause19() {
+        try {
+            Thread.sleep(TIME);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        try {
+            mDevice.pressRecentApps();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        Log.d("TEST", "pause");
+    }
+
+    public static void resume19() {
+        try {
+            Thread.sleep(TIME);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        try {
+            mDevice.pressRecentApps();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        Log.d("TEST", "resume");
+    }
+
     public static void resume() {
         try {
             Thread.sleep(TIME);

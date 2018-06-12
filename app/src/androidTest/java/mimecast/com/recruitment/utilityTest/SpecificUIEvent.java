@@ -22,6 +22,7 @@ public class SpecificUIEvent extends GeneralEvent {
                     e.printStackTrace();
                 }
                 Log.d("TEST", "TEST: Click Sort");
+                break;
 
         }
     }

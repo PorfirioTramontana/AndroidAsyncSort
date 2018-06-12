@@ -34,8 +34,8 @@ public class TestZero {
         GeneralEvent.finish(EmailHeaderListReverseChronologicalSortTask.sem);
 
         GeneralEvent.startApp("mimecast.com.recruitment");
-        GeneralEvent.pause();
-        GeneralEvent.resume();
+        GeneralEvent.pause19();
+        GeneralEvent.resume19();
         GeneralEvent.doubleRotation();
         SpecificUIEvent.execute(SpecificUIEvent.SORT);
     }
