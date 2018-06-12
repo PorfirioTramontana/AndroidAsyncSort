@@ -36,7 +36,7 @@ public class UIAutomatorAsyncTaskTest {
     private final int FAST=10;
     private final int VERYSLOW=5000;
 
-
+/*
     @Test
     public void Test1() throws InterruptedException, UiObjectNotFoundException, RemoteException {
         int time=SLOW;
@@ -202,5 +202,5 @@ public class UIAutomatorAsyncTaskTest {
         EmailHeaderListReverseChronologicalSortTask.task_EmailHeaderListReverseChronologicalSort_Finish.release();
         Log.d("TEST", "TEST: Finish Sort Task");
     }
-
+*/
 }

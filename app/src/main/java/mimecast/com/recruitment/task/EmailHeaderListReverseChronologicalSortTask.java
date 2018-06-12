@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import it.unina.ptramont.TaskTestUtility;
 import mimecast.com.recruitment.model.EmailHeaderModel;
 import mimecast.com.recruitment.utils.CancellableCollectionOperations;
 
@@ -17,8 +18,7 @@ import mimecast.com.recruitment.utils.CancellableCollectionOperations;
 
 public class EmailHeaderListReverseChronologicalSortTask extends AsyncTask<Void, Void, Void> {
     //ADDED
-    public static Semaphore task_EmailHeaderListReverseChronologicalSort_Finish;
-    public static Semaphore task_EmailHeaderListReverseChronologicalSort_Start;
+    public static Semaphore[] sem = new Semaphore[2];
     //END ADDED
 
     public interface EmailHeaderListSortListener {
@@ -36,14 +36,7 @@ public class EmailHeaderListReverseChronologicalSortTask extends AsyncTask<Void,
     @Override
     protected Void doInBackground(Void... voids) {
         //ADDED
-        if (task_EmailHeaderListReverseChronologicalSort_Start != null) {
-            try {
-                task_EmailHeaderListReverseChronologicalSort_Start.acquire();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            task_EmailHeaderListReverseChronologicalSort_Start.release();
-        }
+        TaskTestUtility.startTask(sem);
         //END ADDED
 
         if(null != iEmailHeaderList) {
@@ -70,17 +63,7 @@ public class EmailHeaderListReverseChronologicalSortTask extends AsyncTask<Void,
 
                     }
                     //ADDED
-                    if (task_EmailHeaderListReverseChronologicalSort_Finish != null) {
-                        try {
-                            if (!task_EmailHeaderListReverseChronologicalSort_Finish.tryAcquire(15L, TimeUnit.SECONDS)) {
-                                Log.d("TEST", "TASK: TIMEOUT task i");
-                            }
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        Log.d("TEST", "TASK: End task i");
-                        task_EmailHeaderListReverseChronologicalSort_Finish.release();
-                    }
+                    TaskTestUtility.finishTask(sem);
                     //END ADDED
                     return result;
                 }
@@ -88,17 +71,7 @@ public class EmailHeaderListReverseChronologicalSortTask extends AsyncTask<Void,
         }
 
         //ADDED
-        if (task_EmailHeaderListReverseChronologicalSort_Finish != null) {
-            try {
-                if (!task_EmailHeaderListReverseChronologicalSort_Finish.tryAcquire(15L, TimeUnit.SECONDS)) {
-                    Log.d("TEST", "TASK: TIMEOUT task i");
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Log.d("TEST", "TASK: End task i");
-            task_EmailHeaderListReverseChronologicalSort_Finish.release();
-        }
+        TaskTestUtility.finishTask(sem);
         //END ADDED
         return null;
     }

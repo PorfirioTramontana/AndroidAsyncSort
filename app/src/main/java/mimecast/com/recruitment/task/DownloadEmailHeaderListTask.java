@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import it.unina.ptramont.TaskTestUtility;
 import mimecast.com.recruitment.model.EmailHeaderModel;
 
 /**
@@ -17,8 +18,7 @@ import mimecast.com.recruitment.model.EmailHeaderModel;
 public class DownloadEmailHeaderListTask extends AsyncTask<Void, Void, Void> {
 
     //ADDED
-    public static Semaphore task_DownloadEmailHeaderList_Finish;
-    public static Semaphore task_DownloadEmailHeaderList_Start;
+    public static Semaphore[] sem = new Semaphore[2];
     //END ADDED
 
     public interface EmailHeaderListDownloadListener {
@@ -35,14 +35,7 @@ public class DownloadEmailHeaderListTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         //ADDED
-        if (task_DownloadEmailHeaderList_Start != null) {
-            try {
-                task_DownloadEmailHeaderList_Start.acquire();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            task_DownloadEmailHeaderList_Start.release();
-        }
+        TaskTestUtility.startTask(sem);
         //END ADDED
 
         iResult = new ArrayList(50);
@@ -52,17 +45,7 @@ public class DownloadEmailHeaderListTask extends AsyncTask<Void, Void, Void> {
         }
 
         //ADDED
-        if (task_DownloadEmailHeaderList_Finish != null) {
-            try {
-                if (!task_DownloadEmailHeaderList_Finish.tryAcquire(15L, TimeUnit.SECONDS)) {
-                    Log.d("TEST", "TASK: TIMEOUT task i");
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Log.d("TEST", "TASK: End task i");
-            task_DownloadEmailHeaderList_Finish.release();
-        }
+        TaskTestUtility.finishTask(sem);
         //END ADDED
 
         return null;

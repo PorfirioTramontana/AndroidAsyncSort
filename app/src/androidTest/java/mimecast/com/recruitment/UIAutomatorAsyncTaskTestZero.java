@@ -37,7 +37,7 @@ public class UIAutomatorAsyncTaskTestZero {
     private final int SLOW=1000;
     private final int FAST=10;
     private final int VERYSLOW=5000;
-
+/*
     @Test
     public void ZeroTest() throws InterruptedException, UiObjectNotFoundException, RemoteException {
         int time=SLOW;
@@ -106,5 +106,5 @@ public class UIAutomatorAsyncTaskTestZero {
 
 
     }
-
+*/
 }
